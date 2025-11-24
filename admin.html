@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simage Admin - By MappleID</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
-        tailwind.config = { /* ... (Konfigurasi yang sama) ... */ }
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                // Skema warna Dark Mode
+                'bg-dark': '#121212',
+                'surface-dark': '#1E1E1E',
+                'primary-blue': '#1e88e5',
+                'text-light': '#ffffff',
+                'text-muted': '#b0b0b0',
+              },
+              fontFamily: {
+                'sans': ['Open Sans', 'sans-serif'],
+                'poppins': ['Poppins', 'sans-serif'],
+              }
+            }
+          }
+        }
     </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-bg-dark text-text-light min-h-screen font-sans">
@@ -18,7 +38,7 @@
             <input type="email" id="admin-email" placeholder="Email Admin" class="w-full p-3 mb-4 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
             <input type="password" id="admin-password" placeholder="Password" class="w-full p-3 mb-6 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
             <button id="login-btn" class="w-full p-3 bg-primary-blue text-text-light font-bold rounded-lg hover:bg-opacity-80 transition">Login</button>
-            <p id="login-error" class="text-red-500 text-center mt-4 hidden">Error: Kredensial tidak valid.</p>
+            <p id="login-error" class="text-red-500 text-center mt-4 hidden text-sm">Error: Kredensial tidak valid.</p>
         </section>
 
         <section id="admin-dashboard" class="hidden">
@@ -52,10 +72,10 @@
                     <table class="min-w-full divide-y divide-gray-700">
                         <thead class="bg-bg-dark">
                             <tr>
-                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted">Judul</th>
-                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted">Penulis</th>
-                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted">Pinned</th>
-                                <th class="p-3 text-center text-sm font-poppins font-semibold text-text-muted">Aksi</th>
+                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted w-1/3">Judul</th>
+                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted w-1/4">Penulis</th>
+                                <th class="p-3 text-center text-sm font-poppins font-semibold text-text-muted w-[10%]">Pinned</th>
+                                <th class="p-3 text-center text-sm font-poppins font-semibold text-text-muted w-1/4">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="posts-table-body" class="divide-y divide-gray-800">
@@ -69,6 +89,7 @@
     <div id="post-crud-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[9999] hidden">
         <div class="bg-surface-dark rounded-xl shadow-2xl max-w-lg w-full p-6" onclick="event.stopPropagation()">
             <h3 id="crud-modal-title" class="text-2xl font-poppins font-bold mb-4 border-b border-gray-700 pb-2">Buat Post</h3>
+            
             <input type="hidden" id="post-id-edit">
             
             <input type="text" id="post-title" placeholder="Judul Post" class="w-full p-3 mb-4 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
@@ -78,18 +99,20 @@
             
             <div class="flex items-center mb-6">
                 <input type="checkbox" id="post-is-pinned" class="h-4 w-4 text-primary-blue bg-gray-800 border-gray-700 rounded focus:ring-primary-blue">
-                <label for="post-is-pinned" class="ml-2 text-text-light">Sematkan Post (Pinned)</label>
+                <label for="post-is-pinned" class="ml-2 text-text-light select-none">Sematkan Post (Pinned)</label>
             </div>
             
             <div class="flex justify-end space-x-4">
-                <button id="cancel-post-btn" class="px-4 py-2 bg-gray-600 rounded-lg hover:bg-gray-700 transition">Batal</button>
-                <button id="save-post-btn" class="px-4 py-2 bg-primary-blue text-text-light font-bold rounded-lg hover:bg-opacity-80 transition">Simpan</button>
+                <button id="cancel-post-btn" class="px-4 py-2 bg-gray-600 rounded-lg text-text-light hover:bg-gray-700 transition">Batal</button>
+                <button id="save-post-btn" class="px-4 py-2 bg-primary-blue text-text-light font-bold rounded-lg hover:bg-opacity-80 transition">Simpan Post</button>
             </div>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script> <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    
     <script type="module" src="js/firebase-config.js"></script>
     <script type="module" src="js/admin.js"></script>
 </body>
