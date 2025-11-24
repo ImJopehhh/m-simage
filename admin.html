@@ -3,219 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapple Project | Admin Upload</title>
+    <title>Simage Admin - By MappleID</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        mapple: '#2563eb', // Modern Blue
-                        dark: '#0f172a'
-                    }
-                }
-            }
-        }
+        tailwind.config = { /* ... (Konfigurasi yang sama) ... */ }
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans">
-    
-    <nav class="bg-white border-b border-gray-200">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-2">
-                    <span class="font-bold text-xl tracking-tight text-dark">Mapple Admin</span>
+<body class="bg-bg-dark text-text-light min-h-screen font-sans">
+    <div class="container mx-auto p-4 sm:p-8">
+
+        <section id="admin-login" class="max-w-md mx-auto bg-surface-dark p-8 rounded-xl shadow-2xl mt-20">
+            <h2 class="text-3xl font-poppins font-bold text-center text-primary-blue mb-6">Admin Simage</h2>
+            <input type="email" id="admin-email" placeholder="Email Admin" class="w-full p-3 mb-4 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
+            <input type="password" id="admin-password" placeholder="Password" class="w-full p-3 mb-6 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
+            <button id="login-btn" class="w-full p-3 bg-primary-blue text-text-light font-bold rounded-lg hover:bg-opacity-80 transition">Login</button>
+            <p id="login-error" class="text-red-500 text-center mt-4 hidden">Error: Kredensial tidak valid.</p>
+        </section>
+
+        <section id="admin-dashboard" class="hidden">
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-700">
+                <h1 class="text-4xl font-poppins font-bold">Dashboard Admin</h1>
+                <button id="logout-btn" class="px-4 py-2 bg-gray-600 text-text-light rounded-lg hover:bg-gray-700 transition">Logout</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="p-6 bg-surface-dark rounded-xl shadow-xl">
+                    <h3 class="text-lg text-text-muted">Total Posts</h3>
+                    <p id="total-posts-count" class="text-4xl font-poppins font-bold mt-2 text-primary-blue">0</p>
                 </div>
-                <div class="text-sm text-gray-500">
-                    <a href="index.html" class="hover:text-mapple transition">Lihat Galeri <i class="fa-solid fa-arrow-right-long"></i></a>
+                <div class="p-6 bg-surface-dark rounded-xl shadow-xl">
+                    <h3 class="text-lg text-text-muted">Posts Disematkan</h3>
+                    <p id="pinned-posts-count" class="text-4xl font-poppins font-bold mt-2">0</p>
+                </div>
+                <div class="p-6 bg-surface-dark rounded-xl shadow-xl">
+                    <h3 class="text-lg text-text-muted">Koneksi Firebase</h3>
+                    <p id="firebase-status" class="text-4xl font-poppins font-bold mt-2 text-green-500">Aktif ✔️</p>
                 </div>
             </div>
+
+            <div class="bg-surface-dark p-6 rounded-xl shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-poppins font-semibold">Daftar Posts</h2>
+                    <button id="open-create-modal" class="px-4 py-2 bg-primary-blue text-text-light rounded-lg hover:bg-opacity-80 transition">+ Buat Post Baru</button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="bg-bg-dark">
+                            <tr>
+                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted">Judul</th>
+                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted">Penulis</th>
+                                <th class="p-3 text-left text-sm font-poppins font-semibold text-text-muted">Pinned</th>
+                                <th class="p-3 text-center text-sm font-poppins font-semibold text-text-muted">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="posts-table-body" class="divide-y divide-gray-800">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="post-crud-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[9999] hidden">
+        <div class="bg-surface-dark rounded-xl shadow-2xl max-w-lg w-full p-6" onclick="event.stopPropagation()">
+            <h3 id="crud-modal-title" class="text-2xl font-poppins font-bold mb-4 border-b border-gray-700 pb-2">Buat Post</h3>
+            <input type="hidden" id="post-id-edit">
+            
+            <input type="text" id="post-title" placeholder="Judul Post" class="w-full p-3 mb-4 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
+            <input type="text" id="post-author" placeholder="Nama Penulis" class="w-full p-3 mb-4 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
+            <input type="url" id="post-image-url" placeholder="URL Gambar (Link)" class="w-full p-3 mb-4 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required>
+            <textarea id="post-description" placeholder="Deskripsi Post" rows="4" class="w-full p-3 mb-4 rounded bg-bg-dark border border-gray-700 focus:ring-primary-blue focus:border-primary-blue" required></textarea>
+            
+            <div class="flex items-center mb-6">
+                <input type="checkbox" id="post-is-pinned" class="h-4 w-4 text-primary-blue bg-gray-800 border-gray-700 rounded focus:ring-primary-blue">
+                <label for="post-is-pinned" class="ml-2 text-text-light">Sematkan Post (Pinned)</label>
+            </div>
+            
+            <div class="flex justify-end space-x-4">
+                <button id="cancel-post-btn" class="px-4 py-2 bg-gray-600 rounded-lg hover:bg-gray-700 transition">Batal</button>
+                <button id="save-post-btn" class="px-4 py-2 bg-primary-blue text-text-light font-bold rounded-lg hover:bg-opacity-80 transition">Simpan</button>
+            </div>
         </div>
-    </nav>
+    </div>
 
-    <main class="py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-2xl shadow-gray-200/50">
-            <h1 class="text-3xl font-bold text-dark mb-6 border-b pb-3 flex items-center gap-2">
-                <i class="fa-solid fa-upload text-mapple"></i> Upload Kenangan Baru
-            </h1>
-
-            <div id="status-message" class="hidden p-4 mb-4 text-sm rounded-lg" role="alert"></div>
-
-            <form id="upload-form" class="space-y-6">
-                
-                <div>
-                    <label for="image-file" class="block text-sm font-medium text-gray-700 mb-2">Pilih Foto (Wajib)</label>
-                    <input type="file" id="image-file" accept="image/*" required class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 p-2 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-mapple file:text-white hover:file:bg-blue-700 transition">
-                    <div id="image-preview" class="mt-4 hidden w-32 h-32 bg-gray-200 rounded-lg overflow-hidden border border-gray-300">
-                        <img src="" alt="Preview" class="w-full h-full object-cover">
-                    </div>
-                </div>
-
-                <div>
-                    <label for="post-title" class="block text-sm font-medium text-gray-700">Judul Postingan</label>
-                    <input type="text" id="post-title" required class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm p-3 focus:border-mapple focus:ring-mapple">
-                </div>
-
-                <div>
-                    <label for="post-description" class="block text-sm font-medium text-gray-700">Deskripsi/Cerita</label>
-                    <textarea id="post-description" rows="4" required class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm p-3 focus:border-mapple focus:ring-mapple"></textarea>
-                </div>
-
-                <div>
-                    <label for="post-author" class="block text-sm font-medium text-gray-700">Nama Pengunggah/Pelaku</label>
-                    <input type="text" id="post-author" value="Admin Mapple" required class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm p-3 focus:border-mapple focus:ring-mapple">
-                </div>
-
-                <button type="submit" id="submit-button" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-mapple hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mapple transition-all" disabled>
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload & Simpan Kenangan
-                </button>
-                
-                <div id="progress-container" class="mt-4 hidden">
-                    <label for="upload-progress" class="block text-sm font-medium text-gray-700">Progress Upload</label>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                        <div id="upload-progress" class="bg-mapple h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </main>
-
-    <script type="module">
-        // --- 1. IMPORT FIREBASE MODULES ---
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // --- 2. KONFIGURASI (GANTI DENGAN PUNYA ANDA) ---
-        // **PASTIKAN CONFIG INI SAMA DENGAN index.html**
-        const firebaseConfig = {
-            apiKey: "AIzaSyCCx_JA976UZt59iQ3AE-AwZten95r_rVU",
-            authDomain: "simage-179b7.firebaseapp.com",
-            projectId: "simage-179b7",
-            storageBucket: "simage-179b7.firebasestorage.app",
-            messagingSenderId: "443225663990",
-            appId: "1:443225663990:web:0d5f2f47724c7688fd7fd7"
-        };
-        
-        // --- 3. INISIALISASI ---
-        const app = initializeApp(firebaseConfig);
-        const storage = getStorage(app);
-        const db = getFirestore(app);
-
-        // Cek dan log status
-        if (firebaseConfig.apiKey === "AIzaSyCCx_JA976UZt59iQ3AE-AwZten95r_rVU") {
-            alert("PERINGATAN: Konfigurasi Firebase belum diatur! Fungsi upload tidak akan berjalan.");
-        } else {
-            document.getElementById('submit-button').disabled = false;
-        }
-
-
-        // --- 4. REFERENCES & EVENT LISTENERS ---
-        const form = document.getElementById('upload-form');
-        const imageInput = document.getElementById('image-file');
-        const submitButton = document.getElementById('submit-button');
-        const statusMessage = document.getElementById('status-message');
-        const progressBar = document.getElementById('upload-progress');
-        const progressContainer = document.getElementById('progress-container');
-        const imagePreview = document.getElementById('image-preview');
-
-        // Event: Tampilkan preview gambar
-        imageInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    imagePreview.querySelector('img').src = e.target.result;
-                    imagePreview.classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Event: Submit Form
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const file = imageInput.files[0];
-            const title = document.getElementById('post-title').value;
-            const description = document.getElementById('post-description').value;
-            const author = document.getElementById('post-author').value;
-
-            if (!file) {
-                showStatus('danger', 'Silakan pilih file gambar terlebih dahulu.');
-                return;
-            }
-
-            // Mulai Proses Upload
-            submitButton.disabled = true;
-            submitButton.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Sedang Mengupload...`;
-            progressContainer.classList.remove('hidden');
-
-            try {
-                // 1. Upload Gambar ke Firebase Storage
-                const fileName = `${Date.now()}_${file.name}`;
-                const storageRef = ref(storage, 'mapple_posts/' + fileName);
-                const uploadTask = uploadBytesResumable(storageRef, file);
-
-                // Lacak Progress
-                uploadTask.on('state_changed', 
-                    (snapshot) => {
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        progressBar.style.width = progress + '%';
-                    }, 
-                    (error) => {
-                        throw new Error("Gagal upload gambar: " + error.message);
-                    }, 
-                    async () => {
-                        // 2. Ambil URL Publik
-                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-
-                        // 3. Simpan Metadata ke Firestore
-                        await addDoc(collection(db, "posts"), {
-                            title: title,
-                            description: description,
-                            author: author,
-                            imageUrl: downloadURL,
-                            timestamp: serverTimestamp(), // Waktu server
-                            // Tambahkan data lain jika diperlukan, misal likes: 0, comments_locked: true
-                        });
-
-                        showStatus('success', '✅ Kenangan berhasil diunggah dan disimpan!');
-                        form.reset(); // Kosongkan form
-                        imagePreview.classList.add('hidden');
-                        progressBar.style.width = '0%';
-                    }
-                );
-
-            } catch (error) {
-                showStatus('danger', `❌ Upload Gagal: ${error.message}`);
-                console.error("Admin Upload Error:", error);
-            } finally {
-                submitButton.disabled = false;
-                submitButton.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Upload & Simpan Kenangan`;
-                progressContainer.classList.add('hidden');
-            }
-        });
-
-        // --- 5. HELPER FUNGSI ---
-        function showStatus(type, message) {
-            statusMessage.classList.remove('hidden');
-            statusMessage.innerHTML = message;
-            
-            // Atur warna berdasarkan type
-            if (type === 'success') {
-                statusMessage.className = 'p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50';
-            } else if (type === 'danger') {
-                statusMessage.className = 'p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50';
-            }
-            
-            // Hilangkan pesan setelah 5 detik
-            setTimeout(() => { statusMessage.classList.add('hidden'); }, 5000);
-        }
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script> <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/admin.js"></script>
 </body>
 </html>
