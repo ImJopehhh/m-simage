@@ -1,0 +1,203 @@
+/* GLOBAL STYLES & TYPOGRAPHY */
+:root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #333;
+    --text-color: #f0f0f0;
+    --accent-color: #007bff;
+    --font-primary: 'Poppins', sans-serif;
+    --max-width: 1200px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background-color: rgba(26, 26, 26, 0.95);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.navbar__logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.navbar__subtitle {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--text-color);
+    margin-left: 5px;
+}
+
+.navbar__menu a {
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+/* HERO SECTION */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://picsum.photos/1920/1080?grayscale') center/cover no-repeat;
+    padding-top: 60px; /* Offset dari fixed navbar */
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    font-weight: 300;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--text-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* POSTS SECTION - The magic of CSS Grid */
+.posts-section {
+    padding: 80px 5%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.posts-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+.post-grid {
+    display: grid;
+    /* Grid layout yang fleksibel: akan membuat 3 kolom jika memungkinkan */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px; /* Jarak antar foto */
+}
+
+/* POST CARD - Menjaga Rasio Aspek dan Fleksibilitas */
+.post-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.post-card:hover {
+    transform: scale(1.03);
+}
+
+.post-card img {
+    width: 100%;
+    height: 100%;
+    /* Penting: object-fit: cover memastikan gambar mengisi kotak tanpa terdistorsi */
+    object-fit: cover; 
+}
+
+/* Logika Rasio Aspek Fleksibel */
+.post-card::before {
+    content: '';
+    display: block;
+    /* Menggunakan padding-bottom berdasarkan variabel CSS untuk rasio aspek */
+    padding-bottom: calc(100% / var(--aspect-ratio, 1/1)); 
+}
+
+.post-card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* ABOUT SECTION */
+.about-section {
+    text-align: center;
+    padding: 60px 5%;
+    background-color: var(--secondary-color);
+    margin-top: 40px;
+}
+
+.about-section h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.about-section p {
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+}
+
+/* FOOTER PREMIUM */
+.footer {
+    text-align: center;
+    padding: 20px 5%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    background-color: var(--primary-color);
+}
