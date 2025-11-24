@@ -93,12 +93,12 @@
         // --- 2. KONFIGURASI (GANTI DENGAN PUNYA ANDA) ---
         // **PASTIKAN CONFIG INI SAMA DENGAN index.html**
         const firebaseConfig = {
-            apiKey: "GANTI_DENGAN_API_KEY_ANDA", 
-            authDomain: "GANTI_DENGAN_PROJECT_ID.firebaseapp.com",
-            projectId: "GANTI_DENGAN_PROJECT_ID",
-            storageBucket: "GANTI_DENGAN_PROJECT_ID.appspot.com",
-            messagingSenderId: "NOMOR_SENDER_ID",
-            appId: "APP_ID_ANDA"
+            apiKey: "AIzaSyCCx_JA976UZt59iQ3AE-AwZten95r_rVU",
+            authDomain: "simage-179b7.firebaseapp.com",
+            projectId: "simage-179b7",
+            storageBucket: "simage-179b7.firebasestorage.app",
+            messagingSenderId: "443225663990",
+            appId: "1:443225663990:web:0d5f2f47724c7688fd7fd7"
         };
         
         // --- 3. INISIALISASI ---
@@ -107,7 +107,7 @@
         const db = getFirestore(app);
 
         // Cek dan log status
-        if (firebaseConfig.apiKey === "GANTI_DENGAN_API_KEY_ANDA") {
+        if (firebaseConfig.apiKey === "AIzaSyCCx_JA976UZt59iQ3AE-AwZten95r_rVU") {
             alert("PERINGATAN: Konfigurasi Firebase belum diatur! Fungsi upload tidak akan berjalan.");
         } else {
             document.getElementById('submit-button').disabled = false;
